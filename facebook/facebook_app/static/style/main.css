@@ -1,0 +1,21 @@
+#head {
+    width: 42px;
+    height: 42px;
+    position: relative;
+    right: 300px;
+}
+
+#inp {
+    position: relative;
+    right: 290px;
+}
+
+#inp_txt {
+    background-color:rgb(241, 241, 241);
+    border-radius: 30px;
+}
+
+#cl {
+    margin-right: 10px;
+}
+
