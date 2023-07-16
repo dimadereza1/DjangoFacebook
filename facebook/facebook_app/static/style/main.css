@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(240,242,245);
+}
+
 #head {
     width: 42px;
     height: 42px;
@@ -19,3 +23,63 @@
     margin-right: 10px;
 }
 
+#bt {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    border-radius: 10px;
+    width: 500px;
+    height: 293px;
+    position: absolute;
+    top: 80px;
+    left: 36.9%;
+}
+
+#for_l {
+    border-radius: 3%;
+    width: 396px;
+    height: 349.83px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#btn_log {
+    width: 364px; 
+    height: 48px;
+    color: white;
+    background-color: rgb(24,119,242); 
+    border-radius: 10px; 
+    border: none;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+#btn_redirect {
+    font-weight: bold;
+    color: white;
+    background-color: rgb(66,183,42); 
+    width: 256.14px; 
+    height: 48px; 
+    border-radius: 10px; 
+    border: none;
+}
+
+
+#id_username {
+    width: 364px;
+    height: 52px;
+    border-radius: 5px;
+    border: gainsboro;
+}
+
+#id_password {
+    width: 364px;
+    height: 52px;
+    border-radius: 5px;
+    border: gainsboro;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}

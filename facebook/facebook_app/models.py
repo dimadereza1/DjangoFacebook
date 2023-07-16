@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 class Abstract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
@@ -14,8 +13,19 @@ class Abstract(models.Model):
 class PostM(Abstract):
     text = models.TextField()
     images = models.ImageField(upload_to='media/post_img/')
-    city = models.TextField()
 
 class ProfileM(Abstract):
     avatar = models.ImageField(upload_to='media/profile/')
+    city = models.TextField()
+    telephone = models.IntegerField()
+    date_of_born = models.DateField()
+    # follovers = models.ManyToOneRel(User, related_name='follovers')
+    friends = models.ManyToManyField(User, related_name='friends')
+    modified_at = models.DateTimeField(auto_now=True)
 
+class LikeM(Abstract):
+    post = models.ForeignKey(PostM, on_delete=models.CASCADE)
+
+class CommentM(Abstract):
+    text = models.CharField(max_length=1000)
+    post = models.ForeignKey(PostM, on_delete=models.CASCADE)
