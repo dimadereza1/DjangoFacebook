@@ -3,7 +3,7 @@ from django import http
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from .models import PostM, User, ProfileM, LikeM, CommentM
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.core.files import File
 from pathlib import Path
 from django.urls import reverse_lazy
@@ -55,5 +55,12 @@ class LoginView(LoginView):
     
 
 
-# class RegisterView(CreateView):
-#     template_name = 
+class RegisterView(CreateView):
+    template_name = 'index.html'
+    success_url = reverse_lazy('login')
+    model = User
+
+    def get_context_data(self, request,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reg_form'] = RegisterForm()
+        return context
