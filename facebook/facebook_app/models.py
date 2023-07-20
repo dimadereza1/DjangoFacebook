@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 
 # Create your models here.
 
@@ -14,13 +14,19 @@ class PostM(Abstract):
     text = models.TextField()
     images = models.ImageField(upload_to='media/post_img/')
 
-class ProfileM(Abstract):
-    avatar = models.ImageField(upload_to='media/profile/')
-    city = models.TextField()
-    telephone = models.IntegerField()
-    date_of_born = models.DateField()
-    # follovers = models.ManyToOneRel(User, related_name='follovers')
-    friends = models.ManyToManyField(User, related_name='friends')
+class Friends_user(models.Model):
+    user_fou = models.OneToOneField(User, on_delete=models.CASCADE)
+    friends = models.ManyToManyField(User, related_name='friends', blank=True)
+
+class Many_about_user(AbstractUser):
+    avatar = models.ImageField(default='static/default/avatarka.jpg', upload_to='media/profile/avatar/')
+    background = models.ImageField(default='static/default/background.jpg', upload_to='media/profile/background/') 
+
+
+class ProfileM(models.Model):
+    user_profile = models.OneToOneField(User, on_delete=models.CASCADE)
+    telephone = models.IntegerField(blank=True)
+    date_of_born = models.DateField(blank=True)
     modified_at = models.DateTimeField(auto_now=True)
 
 class LikeM(Abstract):
@@ -29,3 +35,4 @@ class LikeM(Abstract):
 class CommentM(Abstract):
     text = models.CharField(max_length=1000)
     post = models.ForeignKey(PostM, on_delete=models.CASCADE)
+

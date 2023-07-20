@@ -10,7 +10,25 @@ function closeRegister() {
     })
 }
 
+function submData() {
+    $('#top_form').submit(function(){
+        $.ajax('/reg/', {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'data_username': $('#username_id').val(),
+                'data_email': $('#id_email').val(),
+                'data_password': $('#id_passwordd').val()
+            }
+        })
+    }
+    )
+}
+
 $(document).ready(function() {
     openRegister();
     closeRegister();
+    submData();
 })

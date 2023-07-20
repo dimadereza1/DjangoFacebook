@@ -19,9 +19,7 @@ body {
     border-radius: 30px;
 }
 
-#cl {
-    margin-right: 10px;
-}
+
 
 #bt {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -31,7 +29,8 @@ body {
     height: 293px;
     position: absolute;
     top: 80px;
-    left: 36.9%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 #for_l {
@@ -81,7 +80,7 @@ body {
 
 #reg_dialog {
     width: 432px;
-    height: 552px;
+    height: 400px;
     background-color: white;
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -104,6 +103,28 @@ body {
     color: black;
 }
 
+.reg_forms_r {
+    width: 399px;
+    height: 40px;
+    margin-bottom: -15px;
+    border: none;
+}
+
+#head_btn {
+    background-color: white;
+    margin: 0 60px;
+    border: none;
+}
+
+#id_reg_btn {
+    width: 232px;
+    height: 36px;
+    background-color: rgb(0,164,0);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
 
 
 * {

@@ -33,11 +33,14 @@
             <button type="button" id="close_btn"><img class="_8idr img" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
         </div>
         <hr style="width: 100%; margin: 10px 0;">
-        <form method="post">
-            {% for field in reg_form %}
+        <form id="top_form" method="post" style="display: flex; flex-direction: column; align-items: center;">
+            {% csrf_token %}
+            <input class="reg_forms_r" id="username_id" type="text" placeholder="Введіть ім'я" style="margin-bottom: 10px;">
+            {% for field in form_two %}
                 {{ field }}
                 <br>
             {% endfor %}
+            <button id="id_reg_btn" type="submit">Зареєструватися</button>
         </form>
     </dialog>
 
