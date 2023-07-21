@@ -126,6 +126,23 @@ body {
     font-weight: bold;
 }
 
+#avatar_btn {
+    border: none;
+    background-color: white;
+    position: absolute;
+
+}
+
+.down_btn {
+    border: none;
+    background-color: white;
+}
+
+#head_of_profile {
+    height: 970px;
+    width: 100%;
+    background-color: white;
+}
 
 * {
     margin: 0px;

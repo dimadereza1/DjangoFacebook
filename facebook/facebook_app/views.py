@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django import http
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from .models import PostM, User, ProfileM, LikeM, CommentM
+from .models import PostM, LikeM, CommentM,  New_user
 from .forms import LoginForm, RegisterForm
 from django.core.files import File
 from pathlib import Path
@@ -24,7 +24,7 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_img'] = ProfileM.objects.get(user=self.request.user.id).avatar
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
         return context
     
     def post(self, request):
@@ -44,11 +44,13 @@ class CreatePostView(TemplateView):
 
         return JsonResponse('ok', safe=False)
 
-class Profile(TemplateView):
+class ProfileView(TemplateView):
     template_name = 'profile.html'
 
-    def get_context_data(self,request ,**kwargs):
-        return super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = New_user.objects.get(id=self.request.user.id)
+        return context
     
 class LoginView(LoginView):
     template_name = 'login.html'
@@ -71,10 +73,10 @@ class RegisterView(CreateView):
 
     def post(self, request, **kwargs):
         data = request.POST
-        for i in User.objects.all():
+        for i in New_user.objects.all():
             if i.username == data['data_username']:
                 return JsonResponse('такий користувач уже існує', safe=False)
             else:
-                new_user = User.objects.create_user(username=data['data_username'], email=data['data_email'], password=data['data_password'])
+                new_user = New_user.objects.create_user(username=data['data_username'], email=data['data_email'], password=data['data_password'])
                 new_user.save()
         return JsonResponse('', safe=False)
