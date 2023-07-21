@@ -40,7 +40,7 @@ class CreatePostView(TemplateView):
         context =super().get_context_data(**kwargs)
         return context
 
-    def post(self, ):
+    def post(self):
 
         return JsonResponse('ok', safe=False)
 
@@ -49,7 +49,8 @@ class ProfileView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = New_user.objects.get(id=self.request.user.id)
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
+        context['user_bg'] = New_user.objects.get(id=self.request.user.id).background
         return context
     
 class LoginView(LoginView):
