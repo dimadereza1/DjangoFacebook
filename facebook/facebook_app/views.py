@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django import http
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from .models import PostM, LikeM, CommentM,  New_user
+from .models import PostM, LikeM, CommentM,  New_user, Friends_user
 from .forms import LoginForm, RegisterForm
 from django.core.files import File
 from pathlib import Path
@@ -51,6 +51,11 @@ class ProfileView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
         context['user_bg'] = New_user.objects.get(id=self.request.user.id).background
+        context['user'] = self.request.user
+        try:    
+            context['len_friends'] = len(Friends_user.objects.get(user_fou=self.request.user).friends)
+        except Friends_user.DoesNotExist:
+            context['len_friends'] = 0
         return context
     
 class LoginView(LoginView):

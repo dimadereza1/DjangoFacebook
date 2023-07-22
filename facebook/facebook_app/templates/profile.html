@@ -7,9 +7,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <img src="{{ user_bg }}" width="1250px" height="470px">
+                    <img style="border-radius: 10px;" src="{{ user_bg }}" width="1250px" height="470px">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3"><img width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_img}}"></div>
+                <div class="col"><h1 style="position: relative; right: 130px; top: 40px; font-weight: bold;">{{user.username}}</h1></div>
+            </div>
+            <button style="position: relative; left: 200px; top: -87px; border: none; background-color: white;" type="button"><a style="font-weight: bold; color: gray;">друзі: {{len_friends}}</a></button>
+            <button id="add_post_btn" onclick='location.href="http://127.0.0.1:8000/create_post/"'>+ Додати розповідь</button>
+            <button id="edit_profile" onclick='location.href="http://127.0.0.1:8000/edit_profile/"'><img class="x1b0d499 xep6ejk" src="https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/tmaz0VO75BB.png" alt="" height="16" width="16">Редагувати профіль</button>
         </div>
+        <h3 style="position: relative; left: 80px;">Дописи</h3>
+        <hr style="width: 90%; margin: 10px auto;">
     </div>
 {% endblock %}

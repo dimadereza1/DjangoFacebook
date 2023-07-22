@@ -3,5 +3,15 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block body %}
+    <div style="position: fixed; background-color: white; height: 100vh; width: 360px;">
+        <h2 class="top_create" style="font-weight: bold;">Ваша розповідь</h2>
+        <hr class="top_create" style="margin: 10px auto;">
+        <form method="post">
+            <textarea wrap="soft" type="text" placeholder="Start typing" style="width: 326px; height: 146px; border-radius: 5px; position: relative; top: 100px; left: auto;"></textarea>
+            <div style="height: 80px; width: 360px; position: fixed; background-color: white; top: 90%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);">
+                <button type="submit" style="color: white; width: 214px; height: 36px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: #27e; border: none; border-radius: 5px;">Додати розповідь</button>
+            </div>
+        </form>
+    </div>
     
 {% endblock %}
