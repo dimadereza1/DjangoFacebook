@@ -3,4 +3,4 @@ from .base import Abstract
 
 class PostM(Abstract):
     text = models.TextField()
-    images = models.ImageField(upload_to='media/post_img/')
+    images = models.ImageField(upload_to='media/post/')

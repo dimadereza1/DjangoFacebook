@@ -41,6 +41,39 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+#file_upload {
+    position: relative;
+    left: 100px;
+    top: 200px;
+}
+
+#cob {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 972px;
+    height: 600px;
+    position: relative;
+    left: 400px;
+    top: 100px;
+}
+
+#file_upload {
+    border: none;
+    background-color: #27e;
+    width: 220px;
+    height: 330px;
+    color: white;
+    border-radius: 5px;
+    position: relative;
+    left: 380px;
+    top: 125px;
+}
+
+#id_image {
+    display: none;
+}
+
 #btn_log {
     width: 364px; 
     height: 48px;

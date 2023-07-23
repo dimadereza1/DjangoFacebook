@@ -40,7 +40,19 @@ class CreatePostView(TemplateView):
         context =super().get_context_data(**kwargs)
         return context
 
-    def post(self):
+    def post(self, request, **kwargs):
+        data = request.POST
+        if 'data_post_text' in data.keys():
+            path = Path('media/post/upload.png')
+            with path.open(mode='rb') as file:
+                image = File(file, name=file.name)
+                post = PostM(user=self.request.user, text=data['data_post_text'], images=image)
+                post.save()
+                return redirect('/')
+        else:
+            files = request.FILES['file']
+            with open('media/post/upload.png', 'wb') as img:
+                img.write(files.read())
 
         return JsonResponse('ok', safe=False)
 
@@ -57,6 +69,8 @@ class ProfileView(TemplateView):
         except Friends_user.DoesNotExist:
             context['len_friends'] = 0
         return context
+    
+
     
 class LoginView(LoginView):
     template_name = 'login.html'
