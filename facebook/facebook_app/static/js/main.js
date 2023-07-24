@@ -28,7 +28,7 @@ function submData() {
 }
 
 function GetDataPost() {
-    $('#fop').submit(function() {
+    $('#fbtn').click(function() {
         $.ajax('/create_post/', {
             'type':'POST',
             'async': true, 

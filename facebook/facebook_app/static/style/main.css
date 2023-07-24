@@ -58,6 +58,19 @@ body {
     top: 100px;
 }
 
+#s_post {
+    border-radius: 5px;
+    width: 500px;
+    height: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    margin-top: 30px;
+    position: relative;
+    left: 50%;
+    top: 35px;
+    transform: translate(-50%);
+}
+
 #file_upload {
     border: none;
     background-color: #27e;

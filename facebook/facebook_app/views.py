@@ -13,7 +13,6 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
-
 # Create your views here.
 
 class Logout(LoginView):
@@ -24,7 +23,15 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        posts = PostM.objects.all().order_by('-created_at')
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
+        context['all_posts'] = posts
+        likes_count = {}
+        for post in posts:
+            likes_count[post.id] = len(LikeM.objects.filter(post=post))
+
+        print(likes_count)
+        context['likes'] = likes_count
         return context
     
     def post(self, request):
@@ -35,9 +42,11 @@ class HomeView(TemplateView):
 
 class CreatePostView(TemplateView):
     template_name = 'create_post.html'
+    
 
     def get_context_data(self, **kwargs):
         context =super().get_context_data(**kwargs)
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
         return context
 
     def post(self, request, **kwargs):
@@ -48,7 +57,7 @@ class CreatePostView(TemplateView):
                 image = File(file, name=file.name)
                 post = PostM(user=self.request.user, text=data['data_post_text'], images=image)
                 post.save()
-                return redirect('/')
+                return reverse_lazy('/')
         else:
             files = request.FILES['file']
             with open('media/post/upload.png', 'wb') as img:
