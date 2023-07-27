@@ -5,20 +5,21 @@
 {% block body %}
     {% for a_p in all_posts %}
         <div id="s_post">
-            <button style="background-color: white; border: none;" onclick="location.href='http://127.0.0.1:8000/profile'">
+            <button style="background-color: white; border: none;" onclick="location.href='http://127.0.0.1:8000/view_profile/{{a_p.user.id}}'">
                 <img src="{{a_p.user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
                 <a>{{a_p.user.username}}</a>
             </button>
             <hr style="width: 90%; margin: 10px auto;">
-            <button style="border: none; background-color: white;" onclick='location.href="http://127.0.0.1:8000/check_post"'>
+            <button id="opn_post" style="border: none; background-color: white;">
                 <p>{{a_p.text}}</p>
-                {% if a_p.images != None %}
-                    <img style="width: 500px; height: auto;" src="/media/{{a_p.images}}">
-                {% endif %} 
+                <img style="width: 500px; height: auto;" src="/media/{{a_p.images}}">
 
             </button>
                 
             <hr style="width: 90%; margin: 10px auto;">
         </div>
     {% endfor %}
+    <dialog id="post_dialog">
+
+    </dialog>
 {% endblock %}

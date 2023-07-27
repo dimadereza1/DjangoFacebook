@@ -18,6 +18,8 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 class Logout(LoginView):
     pass
 
+
+
 class HomeView(TemplateView):
     template_name = 'index.html'
     
@@ -32,12 +34,14 @@ class HomeView(TemplateView):
 
         print(likes_count)
         context['likes'] = likes_count
+
         return context
     
     def post(self, request):
 
 
         return JsonResponse('ok', safe=False)
+
     
 
 class CreatePostView(TemplateView):
@@ -57,7 +61,9 @@ class CreatePostView(TemplateView):
                 image = File(file, name=file.name)
                 post = PostM(user=self.request.user, text=data['data_post_text'], images=image)
                 post.save()
-                return reverse_lazy('/')
+                reverse_lazy('home')
+                
+                return JsonResponse('ok', safe=False)
         else:
             files = request.FILES['file']
             with open('media/post/upload.png', 'wb') as img:
@@ -70,14 +76,24 @@ class ProfileView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
-        context['user_bg'] = New_user.objects.get(id=self.request.user.id).background
+        user = New_user.objects.get(id=self.request.user.id)
+        context['user_img'] = user.avatar
+        context['user_bg'] = user.background
+        context['p_o_u'] = PostM.objects.filter(user=user)
         context['user'] = self.request.user
         try:    
             context['len_friends'] = len(Friends_user.objects.get(user_fou=self.request.user).friends)
         except Friends_user.DoesNotExist:
             context['len_friends'] = 0
         return context
+    
+    def post(self, request, **kwargs):
+        data = request.POST
+        post = PostM.objects.get(id=data['delete_post'])
+        post.delete()
+
+        return JsonResponse('ok', safe=False)
+
     
 
     
@@ -91,7 +107,19 @@ class LoginView(LoginView):
         context['form_two'] = RegisterForm
         return context
     
+class VProfileView(TemplateView):
+    template_name = 'vprofile.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = New_user.objects.get(id=kwargs['id'])
+        context['user_data'] = user
+        context['p_o_u'] = PostM.objects.filter(user=user)
+        try:
+            context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends)
+        except Friends_user.DoesNotExist:
+            context['len_friends'] = 0
+        return context
 
     
 

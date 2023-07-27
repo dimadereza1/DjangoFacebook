@@ -21,5 +21,33 @@
         </div>
         <h3 style="position: relative; left: 80px;">Дописи</h3>
         <hr style="width: 90%; margin: 10px auto;">
+        {% for a_p in p_o_u %}
+            <div id="s_post">
+                <img src="{{a_p.user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
+                <a>{{a_p.user.username}}</a>
+                <button type="button" class="delete_btnn"  data-id="{{a_p.id}}"><img class="_8idr img" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+            
+                <hr style="width: 90%; margin: 10px auto;">
+                <button id="opn_post" style="border: none; background-color: white;" data-id="{{a_p.id}}">
+                    <p>{{a_p.text}}</p>
+                    {% if a_p.images != None %}
+                        <img style="width: 500px; height: auto;" src="/media/{{a_p.images}}">
+                    {% endif %} 
+
+                </button>
+
+                <dialog id="post_dialog">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-5">
+
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+                    
+                <hr style="width: 90%; margin: 10px auto;">
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

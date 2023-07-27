@@ -1,3 +1,5 @@
+
+
 function openRegister() {
     $('#btn_redirect').click(function(){
         document.getElementById('reg_dialog').show();
@@ -9,6 +11,36 @@ function closeRegister() {
         document.getElementById('reg_dialog').close();
     })
 }
+
+function openPost() {
+    $('#opn_post').click(function(){
+        document.getElementById('post_dialog').show();
+    })
+}
+
+$(function() {
+    $(document).click(function(event) {
+        delete_btn_id = $(event.target);
+
+        if(delete_btn_id.attr('class') == 'delete_btnn'){
+            console.log(delete_btn_id.data('id'));
+            $.ajax('/profile/', {
+                'type':'POST',
+                'async': true, 
+                'dataType': 'json',
+                'data':{
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'delete_post': delete_btn_id.data('id')                
+                },
+                'success':function(data){
+                    window.location.href = '/profile/'
+                }
+            })
+        }   
+    })
+})
+
+
 
 function submData() {
     $('#top_form').submit(function(){
@@ -26,6 +58,7 @@ function submData() {
     }
     )
 }
+
 
 function GetDataPost() {
     $('#fbtn').click(function() {
@@ -58,6 +91,10 @@ function LoadImg() {
             'contentType': false,
             'success': function(data){
                 document.getElementById('cob').innerHTML = '<img src="/media/post/upload.png" style="margin: auto; width: 972px; height: 600px; border-radius: 5px;">'
+            },
+            'success': function(data) {
+
+                window.location.href = '/';
             }
         })
     })
@@ -74,3 +111,4 @@ $(document).ready(function() {
     $('#id_image').trigger('click');
     });
 })
+

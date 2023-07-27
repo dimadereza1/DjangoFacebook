@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+    <div id="head_of_profile">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <img style="border-radius: 10px;" src="{{ user_data.background }}" width="1250px" height="470px">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3"><img width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_data.avatar}}"></div>
+                <div class="col"><h1 style="position: relative; right: 130px; top: 40px; font-weight: bold;">{{user_data.username}}</h1></div>
+            </div>
+            <button style="position: relative; left: 200px; top: -87px; border: none; background-color: white;" type="button"><a style="font-weight: bold; color: gray;">друзі: {{len_friends}}</a></button>
+        </div>
+        <h3 style="position: relative; left: 80px;">Дописи</h3>
+        <hr style="width: 90%; margin: 10px auto;">
+        {% for a_p in p_o_u %}
+            <div id="s_post">
+                <img src="{{user_data.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
+                <a>{{a_p.user.username}}</a>
+    
+                <hr style="width: 90%; margin: 10px auto;">
+                <button style="border: none; background-color: white;" onclick='location.href="http://127.0.0.1:8000/check_post"'>
+                    <p>{{a_p.text}}</p>
+                    {% if a_p.images != None %}
+                        <img style="width: 500px; height: auto;" src="/media/{{a_p.images}}">
+                    {% endif %} 
+
+                </button>
+                    
+                <hr style="width: 90%; margin: 10px auto;">
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
