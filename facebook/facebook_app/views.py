@@ -12,10 +12,11 @@ from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView, RedirectView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest, HttpResponse, JsonResponse
+import json
 
 # Create your views here.
 
-class Logout(LoginView):
+class Logout(LogoutView):
     pass
 
 
@@ -38,9 +39,10 @@ class HomeView(TemplateView):
         return context
     
     def post(self, request):
-
-
-        return JsonResponse('ok', safe=False)
+        data = request.POST
+        post = PostM.objects.get(id=data['vw_post'])
+        comments = CommentM.objects.filter(post=post)
+        return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
 
     
 
@@ -89,9 +91,33 @@ class ProfileView(TemplateView):
     
     def post(self, request, **kwargs):
         data = request.POST
-        post = PostM.objects.get(id=data['delete_post'])
-        post.delete()
+        if 'delete_post' in data.keys():
+            print('asd1')
+            post = PostM.objects.get(id=data['delete_post'])
+            post.delete()
+        elif 'vw_post' in data.keys():
+            print('asd2')
+            post = PostM.objects.get(id=data['vw_post'])
+            comments = CommentM.objects.filter(post=post)
+            return JsonResponse({'post_w_img':str(post.images),'post_text':post.text, 'user_username': request.user.username, 'user_id': request.user.id  }, safe=False)
+        elif 'ava' in request.POST:
+            print('asd4')
+            files = request.FILES['file']
+            with open('facebook_app/static/media_photo/profile/avatar/upload.png', 'wb') as img:
+                img.write(files.read())
 
+            path = Path('facebook_app/static/media_photo/profile/avatar/upload.png')
+            with path.open(mode='rb') as file:
+                image = File(file, name=file.name)
+                user = New_user.objects.get(id=request.user.id)
+                user.avatar = image
+                user.save()
+
+            return JsonResponse({'new_avatar': str(user.avatar)})
+        elif 'cr_user' in data.keys():
+            print('asd3')
+            curr_user = New_user.objects.get(username=data['cr_user'])
+            return JsonResponse({'user_username': curr_user.username})
         return JsonResponse('ok', safe=False)
 
     

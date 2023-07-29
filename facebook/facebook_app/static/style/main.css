@@ -2,6 +2,10 @@ body {
     background-color: rgb(240,242,245);
 }
 
+[inert] > * {
+    opacity: 0.5;
+}
+
 #head {
     width: 42px;
     height: 42px;
@@ -85,6 +89,15 @@ body {
 
 #id_image {
     display: none;
+}
+
+#avatar_upload{
+    background-color: white;
+    border: none;
+    color: rgb(24,119,242);
+    position: relative;
+    top: -130px;
+    left: 90px;
 }
 
 #btn_log {
@@ -172,6 +185,19 @@ body {
     font-weight: bold;
 }
 
+#edit_profile_dataa {
+    width: 232px;
+    height: 36px;
+    font-weight: bold; 
+    border-radius: 5px; 
+    color: white; 
+    margin-left: 50%; 
+    margin-top: 50px;
+    transform: translate(-50%); 
+    border: none; 
+    background-color: rgb(19, 198, 19);
+} 
+
 #avatar_btn {
     border: none;
     background-color: white;
@@ -184,8 +210,29 @@ body {
     top: 80px;
 }
 
+#edit_profile_data{
+    width: 700px;
+    height: auto;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-#edit_profile{
+#background_upload {
+    background-color: white;
+    border: none;
+    color: rgb(24,119,242);
+    position: relative;
+    left: 88%;
+    top: -325px;
+}
+
+
+#edit_profilee{
     width: 185px;
     height: 36px;
     background-color:#eef;

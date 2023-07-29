@@ -8,16 +8,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <img style="border-radius: 10px;" src="{{ user_bg }}" width="1250px" height="470px">
+                    <img id="profile_cr_bg" style="border-radius: 10px;" src="{{ user_bg }}" width="1250px" height="470px">
                 </div>
             </div>
             <div class="row">
-                <div class="col-3"><img width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_img}}"></div>
-                <div class="col"><h1 style="position: relative; right: 130px; top: 40px; font-weight: bold;">{{user.username}}</h1></div>
+                <div class="col-3"><img id="profile_cr_av" width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_img}}"></div>
+                <div class="col"><h1 id="username_o_us" style="position: relative; right: 130px; top: 40px; font-weight: bold;">{{user.username}}</h1></div>
             </div>
             <button style="position: relative; left: 200px; top: -87px; border: none; background-color: white;" type="button"><a style="font-weight: bold; color: gray;">друзі: {{len_friends}}</a></button>
             <button id="add_post_btn" onclick='location.href="http://127.0.0.1:8000/create_post/"'>+ Додати розповідь</button>
-            <button id="edit_profile" onclick='location.href="http://127.0.0.1:8000/edit_profile/"'><img class="x1b0d499 xep6ejk" src="https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/tmaz0VO75BB.png" alt="" height="16" width="16">Редагувати профіль</button>
+            <button id="edit_profilee"><img class="x1b0d499 xep6ejk" src="https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/tmaz0VO75BB.png" alt="" height="16" width="16"> Редагувати профіль</button>
         </div>
         <h3 style="position: relative; left: 80px;">Дописи</h3>
         <hr style="width: 90%; margin: 10px auto;">
@@ -25,29 +25,51 @@
             <div id="s_post">
                 <img src="{{a_p.user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
                 <a>{{a_p.user.username}}</a>
-                <button type="button" class="delete_btnn"  data-id="{{a_p.id}}"><img class="_8idr img" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+                <img class="delete_btnn" data-id="{{a_p.id}}" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0">
             
                 <hr style="width: 90%; margin: 10px auto;">
-                <button id="opn_post" style="border: none; background-color: white;" data-id="{{a_p.id}}">
                     <p>{{a_p.text}}</p>
                     {% if a_p.images != None %}
-                        <img style="width: 500px; height: auto;" src="/media/{{a_p.images}}">
+                        <button><img data-id="{{a_p.id}}" class="open_post" style="width: 500px; height: auto;" src="/media/{{a_p.images}}"></button>
                     {% endif %} 
-
-                </button>
-
-                <dialog id="post_dialog">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-5">
-
-                            </div>
-                        </div>
-                    </div>
-                </dialog>
                     
-                <hr style="width: 90%; margin: 10px auto;">
             </div>
         {% endfor %}
+        
+        <dialog id="post_dialogg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-5">
+                        <img src="" id="post_photo">
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
     </div>
 {% endblock %}
+
+{% block bodybb %}
+    {% csrf_token %}
+    <dialog id="edit_profile_data">
+        <h3 style="font-weight: bold; position: absolute; left: 50%; transform: translate(-50%);">Редагувати профіль</h3>
+        <button style="border: none; background-color: white; position: relative; left: 95%; top: 5px;" type="button" id="close_edits_btn"><img data-id="{{a_p.id}}" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+        <hr style="width: 100%; margin: 40px auto;">
+        <h4 style="font-weight: bold; margin: 40px 10px;">Основна світлина</h4>
+        <div>
+            <img id="avatar_user_prof" style="border-radius: 100%; width: 168px; height: 168px; margin-left: 50%; transform: translate(-50%);" src="{{user_img}}">
+            <input style="display: none;" type="file" id="id_ava" required name="file">
+            <button type="button" id="avatar_upload">Редагувати</button>
+        </div>
+        <h4 style="font-weight: bold; margin: 40px 10px;">Світли на обкладинки</h4>
+        <div>
+            <img id="background_user_prof" style="border-radius: 5px; width: 500px; height: 280px; margin-left: 50%; transform: translate(-50%);" src="{{user_bg}}">
+            <input style="display: none;" type="file" id="id_bgg" required name="file">
+            <button type="button" id="background_upload">Редагувати</button>
+        </div>
+        <h4 style="font-weight: bold; margin: 40px 10px;">Редагування імені</h4>
+        <input style="margin-left: 20px;" id="username_inp" type="text"><br>
+        <button id="edit_profile_dataa">Змінити данні</button>
+    </dialog>
+{% endblock %}
+
