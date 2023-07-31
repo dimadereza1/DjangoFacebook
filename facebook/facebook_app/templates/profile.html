@@ -30,22 +30,12 @@
                 <hr style="width: 90%; margin: 10px auto;">
                     <p>{{a_p.text}}</p>
                     {% if a_p.images != None %}
-                        <button><img data-id="{{a_p.id}}" class="open_post" style="width: 500px; height: auto;" src="/media/{{a_p.images}}"></button>
+                        <button><img data-id="{{a_p.id}}" class="open_postt" style="width: 500px; height: auto;" src="/media/{{a_p.images}}"></button>
                     {% endif %} 
                     
             </div>
         {% endfor %}
         
-        <dialog id="post_dialogg">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-5">
-                        <img src="" id="post_photo">
-                    </div>
-                </div>
-            </div>
-        </dialog>
-
     </div>
 {% endblock %}
 
@@ -71,5 +61,10 @@
         <input style="margin-left: 20px;" id="username_inp" type="text"><br>
         <button id="edit_profile_dataa">Змінити данні</button>
     </dialog>
+
+    <dialog id="post_dialoggg" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border: none; height: 80vh; width: 80%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <button id="cl_bt" style="background-color: white; border: none; color: black;"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+    </dialog>
+
 {% endblock %}
 

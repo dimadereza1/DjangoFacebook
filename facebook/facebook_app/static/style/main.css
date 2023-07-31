@@ -3,7 +3,7 @@ body {
 }
 
 [inert] > * {
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 #head {
@@ -15,7 +15,7 @@ body {
 
 #inp {
     position: relative;
-    right: 115px;
+    right: 113px;
 }
 
 #inp_txt {
@@ -220,6 +220,19 @@ body {
     top: 25%;
     transform: translate(-50%);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#follower_btn{
+    width: 232px; 
+    height: 36px; 
+    border: none; 
+    background-color: rgb(24,119,242); 
+    color: white; 
+    border-radius: 5px; 
+    font-weight: bold;
+    position: relative;
+    left: 80%;
+    top: -80px;
 }
 
 #background_upload {

@@ -24,18 +24,52 @@ function closeRegister() {
     })
 }
 
-// function openPost() {
-//     document.getElementsByClassName('open_post').click(function(){
-//         document.getElementById('post_dialogg').show();
+// $(function(){
+//     document.getElementById('cl_bt').addEventListener('click', function() {
+//         document.getElementById('post_dialoggg').close();
 //     })
 // }
+// )
+
+$(function(){
+    $('#follower_btn').click(function(){
+        let btn = $(this);
+        $.ajax(btn.data('url'), {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'friend':true
+            },
+            'success':function(data){
+                btn.style.backgroundColor = '#eef';
+                btn.style.color = 'black';
+            }
+        })
+    })
+})
 
 $(function(){
     $(document).click(function(event){
         open_post_btn = $(event.target);
 
-        if(open_post_btn.attr('class') == 'open_post'){
-            document.getElementById('post_dialogg').show();
+        if(open_post_btn.attr('class') == 'open_postt'){
+            document.getElementById('post_dialoggg').show();
+            document.getElementById('bodyb').inert = true;
+            
+            $.ajax('/profile/', {
+                'type':'POST',
+                'async': true, 
+                'dataType': 'json',
+                'data':{
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'id_o_post_i_d': open_post_btn.data('id')
+                },
+                'success':function(data){
+                    document.getElementById('post_dialoggg').innerHTML += data
+                }
+            })
         }
     })
 })
@@ -56,28 +90,6 @@ $(function() {
                 },
                 'success':function(data){
                     window.location.href = '/profile/'
-                }
-            })
-        }   
-    })
-})
-
-$(function() {
-    $(document).click(function(event) {
-        delete_btn_idd = $(event.target);
-
-        if(delete_btn_idd.attr('class') == 'open_post'){
-            console.log(delete_btn_idd.data('id'));
-            $.ajax('/profile/', {
-                'type':'POST',
-                'async': true, 
-                'dataType': 'json',
-                'data':{
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'vw_post': delete_btn_idd.data('id')                
-                },
-                'success':function(data){
-                    document.getElementById('post_photo').src = '/media/' + data['post_w_img']
                 }
             })
         }   

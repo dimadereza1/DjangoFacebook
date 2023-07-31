@@ -27,7 +27,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         posts = PostM.objects.all().order_by('-created_at')
-        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
         context['all_posts'] = posts
         likes_count = {}
         for post in posts:
@@ -52,7 +52,7 @@ class CreatePostView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context =super().get_context_data(**kwargs)
-        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
         return context
 
     def post(self, request, **kwargs):
@@ -79,8 +79,8 @@ class ProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = New_user.objects.get(id=self.request.user.id)
-        context['user_img'] = user.avatar
-        context['user_bg'] = user.background
+        context['user_img'] = user.avatar.url
+        context['user_bg'] = user.background.url
         context['p_o_u'] = PostM.objects.filter(user=user)
         context['user'] = self.request.user
         try:    
@@ -95,6 +95,12 @@ class ProfileView(TemplateView):
             print('asd1')
             post = PostM.objects.get(id=data['delete_post'])
             post.delete()
+        elif 'id_o_post_i_d' in data.keys():
+            print('234')
+            post = PostM.objects.get(id=data['id_o_post_i_d'])
+            comments = CommentM.objects.filter(post=post)
+            response = render_to_string('post_for_dia.html', {'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url})
+            return JsonResponse(response, safe=False)
         elif 'vw_post' in data.keys():
             print('asd2')
             post = PostM.objects.get(id=data['vw_post'])
@@ -113,7 +119,7 @@ class ProfileView(TemplateView):
                 user.avatar = image
                 user.save()
 
-            return JsonResponse({'new_avatar': str(user.avatar)})
+            return JsonResponse({'new_avatar': str(user.avatar.url)})
         elif 'cr_user' in data.keys():
             print('asd3')
             curr_user = New_user.objects.get(username=data['cr_user'])
@@ -141,11 +147,22 @@ class VProfileView(TemplateView):
         user = New_user.objects.get(id=kwargs['id'])
         context['user_data'] = user
         context['p_o_u'] = PostM.objects.filter(user=user)
-        try:
-            context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends)
-        except Friends_user.DoesNotExist:
-            context['len_friends'] = 0
+        # try:
+        #     context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends)
+        # except Friends_user.DoesNotExist:
+        #     context['len_friends'] = 0
         return context
+    
+    def post(self, request, **kwargs):
+        data = request.POST
+
+        if 'friend' in data.keys():
+            user = request.user
+            a = New_user.objects.get(id=kwargs['id'])
+            friend = Friends_user.objects.get_or_create(user_fou=a)
+            friend1 = Friends_user.objects.get(user_fou=a)
+            friend1.friends.add(user)
+        return JsonResponse('ok', safe=False)
 
     
 
