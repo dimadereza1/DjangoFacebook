@@ -1,0 +1,8 @@
+{% for c in users %}
+    <div>
+        <button type="button" id="searched_person">
+            <img src="{{c.avatar}}">
+            <a>{{c.username}}</a>
+        </button>
+    </div>
+{% endfor %}

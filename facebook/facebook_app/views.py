@@ -83,10 +83,10 @@ class ProfileView(TemplateView):
         context['user_bg'] = user.background.url
         context['p_o_u'] = PostM.objects.filter(user=user)
         context['user'] = self.request.user
-        try:    
-            context['len_friends'] = len(Friends_user.objects.get(user_fou=self.request.user).friends)
-        except Friends_user.DoesNotExist:
-            context['len_friends'] = 0
+        # try:    
+        #     context['len_friends'] = len(Friends_user.objects.get(user_fou=self.request.user).friends)
+        # except Friends_user.DoesNotExist:
+        #     context['len_friends'] = 0
         return context
     
     def post(self, request, **kwargs):
@@ -95,17 +95,27 @@ class ProfileView(TemplateView):
             print('asd1')
             post = PostM.objects.get(id=data['delete_post'])
             post.delete()
+
+        elif 'form_data' in data.keys():
+            post = PostM.objects.get(id=data['data_forma_id'])
+            user = request.user
+            comment = CommentM(text=data['form_data'], post=post, user=user)
+            response = render_to_string('new_comment.html', {'text_comment': data['form_data'], 'user': user})
+            return JsonResponse(response, safe=False)
+
         elif 'id_o_post_i_d' in data.keys():
             print('234')
             post = PostM.objects.get(id=data['id_o_post_i_d'])
             comments = CommentM.objects.filter(post=post)
-            response = render_to_string('post_for_dia.html', {'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url})
+            response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
             return JsonResponse(response, safe=False)
+        
         elif 'vw_post' in data.keys():
             print('asd2')
             post = PostM.objects.get(id=data['vw_post'])
             comments = CommentM.objects.filter(post=post)
             return JsonResponse({'post_w_img':str(post.images),'post_text':post.text, 'user_username': request.user.username, 'user_id': request.user.id  }, safe=False)
+        
         elif 'ava' in request.POST:
             print('asd4')
             files = request.FILES['file']
@@ -120,6 +130,7 @@ class ProfileView(TemplateView):
                 user.save()
 
             return JsonResponse({'new_avatar': str(user.avatar.url)})
+        
         elif 'cr_user' in data.keys():
             print('asd3')
             curr_user = New_user.objects.get(username=data['cr_user'])

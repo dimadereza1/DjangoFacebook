@@ -11,3 +11,7 @@ class Messages(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
     created_At = models.DateTimeField(auto_now_add=True)
     text = models.CharField(max_length=10000)
+
+class Contacts(models.Model):
+    user = models.ForeignKey(New_user, on_delete=models.CASCADE)
+    chat = models.ManyToManyField(Chat)

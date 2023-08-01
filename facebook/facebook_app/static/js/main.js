@@ -1,3 +1,7 @@
+$.ajaxSetup({
+    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+});
+
 function openEdits() {
     $('#edit_profilee').click(function(){
         document.getElementById('edit_profile_data').show();
@@ -30,6 +34,26 @@ function closeRegister() {
 //     })
 // }
 // )
+
+$(function(){
+    $('#comment_forma').submit(function(){
+        let forma = $(this);
+        $.ajax('/profile/', {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'form_data': document.getElementById('data_from_comment_form'),
+                'data_forma_id': forma.data('id')
+            },
+            'success':function(data){
+                document.getElementById('all_comments_here').innerHTML += data
+            }
+        })
+    })
+})
+
 
 $(function(){
     $('#follower_btn').click(function(){
