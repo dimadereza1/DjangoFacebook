@@ -16,6 +16,11 @@ function closeEdits() {
     })
 }
 
+function closePostsV(){
+    document.getElementById('post_dialoggg').close();
+    document.getElementById('bodyb').inert = false;
+}
+
 function openRegister() {
     $('#btn_redirect').click(function(){
         document.getElementById('reg_dialog').show();
@@ -35,24 +40,23 @@ function closeRegister() {
 // }
 // )
 
-$(function(){
-    $('#comment_forma').submit(function(){
-        let forma = $(this);
+function addComment(id){
+        console.log('asdasd')
         $.ajax('/profile/', {
             'type':'POST',
             'async': true, 
             'dataType': 'json',
             'data': {
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                'form_data': document.getElementById('data_from_comment_form'),
-                'data_forma_id': forma.data('id')
+                'form_dataa': $('#data_from_comment_form').val(),
+                'data_forma_id': id
             },
             'success':function(data){
                 document.getElementById('all_comments_here').innerHTML += data
             }
         })
-    })
-})
+    }
+
 
 
 $(function(){
@@ -67,8 +71,9 @@ $(function(){
                 'friend':true
             },
             'success':function(data){
-                btn.style.backgroundColor = '#eef';
-                btn.style.color = 'black';
+                console.log('asdasd')
+                document.getElementById('follower_btn').style.backgroundColor = '#eef';
+                document.getElementById('follower_btn').style.color = 'black';
             }
         })
     })
@@ -91,7 +96,7 @@ $(function(){
                     'id_o_post_i_d': open_post_btn.data('id')
                 },
                 'success':function(data){
-                    document.getElementById('post_dialoggg').innerHTML += data
+                    document.getElementById('post_dialoggg').innerHTML = data
                 }
             })
         }
@@ -198,6 +203,23 @@ $(function(){
 })
 
 $(function(){
+    $('#edit_username_dataaaa').click(function(){
+        $.ajax('/profile/', {
+            'type': 'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'data_edit_username': document.getElementById('username_inp').value
+            },
+            'success':function(data){
+                document.getElementById('username_o_us').innerText = data['new_username'];
+            }
+        })
+    })
+})
+
+$(function(){
     $('#id_ava').change(function(){
         let formData = new FormData();
 
@@ -222,6 +244,31 @@ $(function(){
     })
 })
 
+$(function(){
+    $('#id_backgroundd').change(function(){
+        let formData = new FormData();
+
+        formData.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').val());
+        formData.append('file', document.getElementById('id_backgroundd').files[0]);
+        formData.append('backgg', 0)
+        console.log(document.getElementById('id_backgroundd').files[0])
+
+        $.ajax('/profile/', {
+            'type': 'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': formData,
+            'processData': false,
+            'contentType': false,
+            'success': function(data){
+                console.log(data['new_avatar'])
+                document.getElementById('profile_cr_bg').src = data['new_background']
+                document.getElementById('background_user_prof').src = data['new_background']
+            }
+        })
+    })  
+})
+username_inp
 $(document).ready(function() {
     closeEdits();
     openEdits();
@@ -240,7 +287,7 @@ $(document).ready(function() {
     });
     $('#background_upload').on('click', function(e) {
         e.preventDefault();
-    $('#id_bgg').trigger('click');
+    $('#id_backgroundd').trigger('click');
     });
 })
 

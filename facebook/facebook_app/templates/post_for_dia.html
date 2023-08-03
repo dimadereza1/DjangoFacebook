@@ -1,10 +1,11 @@
 <div class="container">
     <div class="row" >
+        <button id="cl_bt" onclick="closePostsV();" style="background-color: white; border: none; color: black;"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
         <div class="col-md-7 col-lg-7 ">
             <img style="position: relative; top: 100px;" width="100%" id="post_photo" src="{{img_post.url}}">
         </div>
         <div class="col">
-            <img id="user_avatar_i_mg" src="{{user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
+            <img id="user_avatar_i_mg" src="{{user.avatar.url}}" width="40px" height="40px" style="border-radius: 100%;">
             <a>{{user.username}}</a>
             <div>
                 <h4 id="text_of_post_v">{{text_post}}</h4>
@@ -14,11 +15,11 @@
                 Кнопки
             </div>
             <hr style="margin: 10px auto; width: 90%;">
-            <div id="all_comments_here">
+            <div style="height: 200px; overflow-y: scroll;" id="all_comments_here">
                 {% for c in comments %}
                     <div>
                         <button style="border: none; background-color: white;" onclick='location.href="http://127.0.0.1:8000/view_profile/{{c.user.id}}"'>
-                            <img src="{{c.user.avatar}}" style="border-radius: 100%; width: 28px; height: 28px;">
+                            <img src="{{c.user.avatar.url}}" style="border-radius: 100%; width: 28px; height: 28px;">
                             <a>{{c.user.username}}</a>
                         </button>
                         <h4>{{c.text}}</h4>
@@ -27,14 +28,11 @@
             </div>
             <hr style="margin: 10px auto; width: 90%;">
             <div>
-                <img src="{{user.avatar}}" style="border-radius: 100%; width: 32px; height: 32px;">
-                <form data-id="{{postt.id}}" method="post" id="comment_forma">
-                    {% csrf_token %}
-                    <textarea id="data_from_comment_form" wrap="soft" type="text" placeholder="Add comment..." style="width: 290px; height: 72px; border: none; background-color: rgb(235, 235, 235); border-radius: 10px;"></textarea>
-                    <button style="border: none; background-color: white" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
-                        <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
-                    </svg></button>
-                </form>
+                <img src="{{user.avatar.url}}" style="border-radius: 100%; width: 32px; height: 32px;">
+                <textarea id="data_from_comment_form" wrap="soft" type="text" placeholder="Add comment..." style="width: 290px; height: 72px; border: none; background-color: rgb(235, 235, 235); border-radius: 10px;"></textarea>
+                <button id="comment_buttonnn" onclick="addComment({{postt.id}})" style="border: none; background-color: white" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
+                    <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
+                </svg></button>
 
             </div>
         </div>

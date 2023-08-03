@@ -8,11 +8,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <img style="border-radius: 10px;" src="{{ user_data.background }}" width="1250px" height="470px">
+                    <img style="border-radius: 10px;" src="{{ user_data.background.url }}" width="1250px" height="470px">
                 </div>
             </div>
             <div class="row">
-                <div class="col-3"><img width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_data.avatar}}"></div>
+                <div class="col-3"><img width="168px" height="168px" style="border-radius:100% ; border: white solid; position: relative; top: -30px; left: 20px;" src="{{user_data.avatar.url}}"></div>
                 <div class="col"><h1 style="position: relative; right: 130px; top: 40px; font-weight: bold;">{{user_data.username}}</h1></div>
                 <div class="col-12"><button data-url="/view_profile/{{user_data.id}}/" id="follower_btn">Дружити</button></div>
             </div>

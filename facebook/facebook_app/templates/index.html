@@ -6,7 +6,7 @@
     {% for a_p in all_posts %}
         <div id="s_post">
             <button style="background-color: white; border: none;" onclick="location.href='http://127.0.0.1:8000/view_profile/{{a_p.user.id}}'">
-                <img src="{{a_p.user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
+                <img src="{{a_p.user.avatar.url}}" width="40px" height="40px" style="border-radius: 100%;">
                 <a>{{a_p.user.username}}</a>
             </button>
             <hr style="width: 90%; margin: 10px auto;">

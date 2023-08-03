@@ -23,7 +23,7 @@
         <hr style="width: 90%; margin: 10px auto;">
         {% for a_p in p_o_u %}
             <div id="s_post">
-                <img src="{{a_p.user.avatar}}" width="40px" height="40px" style="border-radius: 100%;">
+                <img src="{{a_p.user.avatar.url}}" width="40px" height="40px" style="border-radius: 100%;">
                 <a>{{a_p.user.username}}</a>
                 <img class="delete_btnn" data-id="{{a_p.id}}" src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0">
             
@@ -54,16 +54,15 @@
         <h4 style="font-weight: bold; margin: 40px 10px;">Світли на обкладинки</h4>
         <div>
             <img id="background_user_prof" style="border-radius: 5px; width: 500px; height: 280px; margin-left: 50%; transform: translate(-50%);" src="{{user_bg}}">
-            <input style="display: none;" type="file" id="id_bgg" required name="file">
+            <input style="display: none;" type="file" id="id_backgroundd" required name="file">
             <button type="button" id="background_upload">Редагувати</button>
         </div>
         <h4 style="font-weight: bold; margin: 40px 10px;">Редагування імені</h4>
         <input style="margin-left: 20px;" id="username_inp" type="text"><br>
-        <button id="edit_profile_dataa">Змінити данні</button>
+        <button id="edit_username_dataaaa">Змінити данні</button>
     </dialog>
 
     <dialog id="post_dialoggg" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border: none; height: 80vh; width: 80%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <button id="cl_bt" style="background-color: white; border: none; color: black;"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
     </dialog>
 
 {% endblock %}

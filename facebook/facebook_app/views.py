@@ -83,24 +83,27 @@ class ProfileView(TemplateView):
         context['user_bg'] = user.background.url
         context['p_o_u'] = PostM.objects.filter(user=user)
         context['user'] = self.request.user
-        # try:    
-        #     context['len_friends'] = len(Friends_user.objects.get(user_fou=self.request.user).friends)
-        # except Friends_user.DoesNotExist:
-        #     context['len_friends'] = 0
+        try:
+            context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends.all())
+        except Friends_user.DoesNotExist:
+            context['len_friends'] = 0
         return context
     
     def post(self, request, **kwargs):
         data = request.POST
+        print(data.keys())
         if 'delete_post' in data.keys():
             print('asd1')
             post = PostM.objects.get(id=data['delete_post'])
             post.delete()
 
-        elif 'form_data' in data.keys():
+        elif 'form_dataa' in data.keys():
+            print('asd')
             post = PostM.objects.get(id=data['data_forma_id'])
             user = request.user
-            comment = CommentM(text=data['form_data'], post=post, user=user)
-            response = render_to_string('new_comment.html', {'text_comment': data['form_data'], 'user': user})
+            comment = CommentM(text=data['form_dataa'], post=post, user=user)
+            comment.save()
+            response = render_to_string('new_comment.html', {'text_comment': data['form_dataa'], 'user': user})
             return JsonResponse(response, safe=False)
 
         elif 'id_o_post_i_d' in data.keys():
@@ -109,6 +112,25 @@ class ProfileView(TemplateView):
             comments = CommentM.objects.filter(post=post)
             response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
             return JsonResponse(response, safe=False)
+        
+        elif 'backgg' in data.keys():
+            files = request.FILES['file']
+            with open('facebook_app/static/media_photo/profile/background/upload.png', 'wb') as img:
+                img.write(files.read())
+
+            path = Path('facebook_app/static/media_photo/profile/background/upload.png')
+            with path.open(mode='rb') as file:
+                image = File(file, name=file.name)
+                user = New_user.objects.get(id=request.user.id)
+                user.background = image
+                user.save()
+            return JsonResponse({'new_background': str(user.background.url)}, safe=False)
+        
+        elif 'data_edit_username' in data.keys():
+            user = New_user.objects.get(id=request.user.id)
+            user.username = data['data_edit_username']
+            user.save()
+            return JsonResponse({'new_username': str(user.username)}, safe=False)
         
         elif 'vw_post' in data.keys():
             print('asd2')
@@ -157,11 +179,12 @@ class VProfileView(TemplateView):
         context = super().get_context_data(**kwargs)
         user = New_user.objects.get(id=kwargs['id'])
         context['user_data'] = user
+        context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
         context['p_o_u'] = PostM.objects.filter(user=user)
-        # try:
-        #     context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends)
-        # except Friends_user.DoesNotExist:
-        #     context['len_friends'] = 0
+        try:
+            context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends.all())
+        except Friends_user.DoesNotExist:
+            context['len_friends'] = 0
         return context
     
     def post(self, request, **kwargs):
@@ -170,9 +193,12 @@ class VProfileView(TemplateView):
         if 'friend' in data.keys():
             user = request.user
             a = New_user.objects.get(id=kwargs['id'])
-            friend = Friends_user.objects.get_or_create(user_fou=a)
-            friend1 = Friends_user.objects.get(user_fou=a)
-            friend1.friends.add(user)
+            b, t =Friends_user.objects.get_or_create(user_fou=a)
+            
+            b.friends.add(user)
+            b.save()
+            return JsonResponse('ok', safe=False)
+            
         return JsonResponse('ok', safe=False)
 
     
