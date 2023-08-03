@@ -86,8 +86,8 @@ $(function(){
         if(open_post_btn.attr('class') == 'open_postt'){
             document.getElementById('post_dialoggg').show();
             document.getElementById('bodyb').inert = true;
-            
-            $.ajax('/profile/', {
+             
+            $.ajax(open_post_btn.data('url'), {
                 'type':'POST',
                 'async': true, 
                 'dataType': 'json',
@@ -268,7 +268,8 @@ $(function(){
         })
     })  
 })
-username_inp
+
+
 $(document).ready(function() {
     closeEdits();
     openEdits();

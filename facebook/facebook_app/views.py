@@ -29,20 +29,36 @@ class HomeView(TemplateView):
         posts = PostM.objects.all().order_by('-created_at')
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
         context['all_posts'] = posts
-        likes_count = {}
-        for post in posts:
-            likes_count[post.id] = len(LikeM.objects.filter(post=post))
-
-        print(likes_count)
-        context['likes'] = likes_count
 
         return context
     
     def post(self, request):
         data = request.POST
-        post = PostM.objects.get(id=data['vw_post'])
-        comments = CommentM.objects.filter(post=post)
-        return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
+        if 'vw_post' in data.keys():
+            post = PostM.objects.get(id=data['vw_post'])
+            comments = CommentM.objects.filter(post=post)
+            return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
+        
+        elif 'id_o_post_i_d' in data.keys():
+            print('234')
+            post = PostM.objects.get(id=data['id_o_post_i_d'])
+            comments = CommentM.objects.filter(post=post)
+            response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
+            return JsonResponse(response, safe=False)
+        
+        elif 'like' in data.keys():
+            context = {}
+            context['amount'] = len(LikeM.objects.get(post=post))
+            is_liked = 1
+            for i in LikeM.objects.filter(post=post):
+                if i.user == self.request.user:
+                    is_liked = 1
+                    break
+            else:
+                is_liked = 0
+            context['is_liked'] = is_liked
+
+        return JsonResponse('ok', safe=False)
 
     
 

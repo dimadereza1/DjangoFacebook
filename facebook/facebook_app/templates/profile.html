@@ -30,7 +30,7 @@
                 <hr style="width: 90%; margin: 10px auto;">
                     <p>{{a_p.text}}</p>
                     {% if a_p.images != None %}
-                        <button><img data-id="{{a_p.id}}" class="open_postt" style="width: 500px; height: auto;" src="/media/{{a_p.images}}"></button>
+                        <button><img data-url="/profile/" data-id="{{a_p.id}}" class="open_postt" style="width: 500px; height: auto;" src="/media/{{a_p.images}}"></button>
                     {% endif %} 
                     
             </div>
@@ -60,9 +60,6 @@
         <h4 style="font-weight: bold; margin: 40px 10px;">Редагування імені</h4>
         <input style="margin-left: 20px;" id="username_inp" type="text"><br>
         <button id="edit_username_dataaaa">Змінити данні</button>
-    </dialog>
-
-    <dialog id="post_dialoggg" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border: none; height: 80vh; width: 80%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
     </dialog>
 
 {% endblock %}
