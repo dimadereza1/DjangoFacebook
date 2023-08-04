@@ -28,8 +28,28 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         posts = PostM.objects.all().order_by('-created_at')
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
-        context['all_posts'] = posts
 
+
+        post_likes_counts = []
+        for post in posts:
+            likes_count = LikeM.objects.filter(post=post).count()
+            likes_count1 = LikeM.objects.filter(post=post)
+            user = post.user
+            print('asdasdasdasdasdasdasdasd')
+
+            for l in likes_count1:
+                print('asdasdads')
+                if l.user == self.request.user:
+                    print('a2')
+                    is_liked = 1
+                    post_likes_counts.append([post, likes_count, 1, user])
+                    break
+            else:
+                post_likes_counts.append([post, likes_count, 0, user])
+            
+
+        context['post_likes_counts'] = post_likes_counts
+        print(post_likes_counts)
         return context
     
     def post(self, request):
@@ -45,18 +65,19 @@ class HomeView(TemplateView):
             comments = CommentM.objects.filter(post=post)
             response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
             return JsonResponse(response, safe=False)
+        elif 'data_id' in data.keys():
+            post = PostM.objects.get(id=data['data_id'])
+
+            like = LikeM(post=post, user=self.request.user)
+            like.save()
+
+            response = {'id_o_ppost': post.id}
+            return JsonResponse(response, safe=False)
         
-        elif 'like' in data.keys():
-            context = {}
-            context['amount'] = len(LikeM.objects.get(post=post))
-            is_liked = 1
-            for i in LikeM.objects.filter(post=post):
-                if i.user == self.request.user:
-                    is_liked = 1
-                    break
-            else:
-                is_liked = 0
-            context['is_liked'] = is_liked
+        if 'delete_data_id' in data.keys():
+            like = LikeM.objects.get(id=data['delete_data_id'])
+            like.delete()
+            like.save()
 
         return JsonResponse('ok', safe=False)
 

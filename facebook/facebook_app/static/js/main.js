@@ -40,6 +40,104 @@ function closeRegister() {
 // }
 // )
 
+// $(function(){
+//     $('#like_btn').click(function(){
+//         let btn = $(this);
+//         console.log(btn.data('id'))
+//         $.ajax(btn.data('url'), {
+//             'type':'POST',
+//             'async': true, 
+//             'dataType': 'json',
+//             'data': {
+//                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+//                 'data_id': btn.data('id')
+//             },
+//            'success':function(data){
+
+//                 document.getElementById('like_btn').outerHTML = '<button data-url="/" id="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+//                 document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) + 1;
+
+//             }
+//         })
+//     })
+// })
+
+$(function(){
+    $('#not_coment_on_post_btn').click(function(){
+        let btn = $(this);
+        console.log(btn.data('id'))
+        $.ajax(btn.data('url'), {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'delete_data_id': btn.data('id')
+            },
+           'success':function(data){
+                document.getElementById('not_coment_on_post_btn').outerHTML = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+                document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) - 1;
+            }
+        })
+    })
+})
+
+$(function(){
+    $(document).click(function(event){
+        like = $(event.target);
+
+        if(like.attr('class') == 'likes_button'){
+             
+            $.ajax(like.data('url'), {
+                'type':'POST',
+                'async': true, 
+                'dataType': 'json',
+                'data':{
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'data_id': like.data('id')
+                },
+                'success': function(data){
+                    let elements = document.getElementsByClassName('likes_button');
+                    for (let i=0; i < elements.length; i++) {
+                        if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
+                            elements.item(i).getElementsByClassName("likes_button").item(0).outerHTML = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+                            elements.item(i).getElementsByClassName("nomber_of_like").item(0).innerHTML -= Number(1) ;
+                        }
+                    }
+                }
+            })
+        }
+    })
+})
+
+$(function(){
+    $(document).click(function(event){
+        like = $(event.target);
+
+        if(like.attr('class') == 'likes_button'){
+             
+            $.ajax(like.data('url'), {
+                'type':'POST',
+                'async': true, 
+                'dataType': 'json',
+                'data':{
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'data_id': like.data('id')
+                },
+                'success': function(data){
+                    let elements = document.getElementsByClassName('likes_button');
+                    for (let i=0; i < elements.length; i++) {
+                        if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
+                            elements.item(i).getElementsByClassName("likes_button").item(0).outerHTML = '<button data-url="/" class="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+                            elements.item(i).getElementsByClassName("nomber_of_like").item(0).innerHTML += Number(1) ;
+                        }
+                    }
+                }
+            })
+        }
+    })
+})
+
 function addComment(id){
         console.log('asdasd')
         $.ajax('/profile/', {
@@ -280,7 +378,7 @@ $(document).ready(function() {
     GetDataPost();
     $('#file_upload').on('click', function(e) {
         e.preventDefault();
-    $('#id_image').trigger('click');
+    $('#id_image').trigger('click');  
     });
     $('#avatar_upload').on('click', function(e) {
         e.preventDefault();
@@ -292,3 +390,18 @@ $(document).ready(function() {
     });
 })
 
+// $(document).ready(function() {
+//     $.ajax('/', {
+//         'type': 'POST',
+//         'async': true, 
+//         'dataType': 'json',
+//         'data': {
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+//             'for_posts': true
+//         },
+//         'success': function(data){
+//             document.getElementById('div_for_all_posts').innerHTML = data
+//         }
+//     })
+// }
+// )
