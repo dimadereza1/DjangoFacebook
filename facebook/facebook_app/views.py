@@ -30,15 +30,29 @@ class HomeView(TemplateView):
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
 
 
+        context['following'] = Friends_user.objects.get(user_fou=self.request.user).following.all()
+
+        friends = []
+
+        try:
+            for f in Friends_user.objects.filter(user_fou=self.request.user).following.all():
+                for foll in Friends_user.objects.filter(user_fou=f).following.all():
+                    if foll == self.request.user:
+                        friends.append(f)
+            print(friends)
+
+        except AttributeError:
+            print('test1')
+
         post_likes_counts = []
         for post in posts:
             likes_count = LikeM.objects.filter(post=post).count()
             likes_count1 = LikeM.objects.filter(post=post)
             user = post.user
-            print('asdasdasdasdasdasdasdasd')
+
 
             for l in likes_count1:
-                print('asdasdads')
+
                 if l.user == self.request.user:
                     print('a2')
                     is_liked = 1
@@ -49,7 +63,9 @@ class HomeView(TemplateView):
             
 
         context['post_likes_counts'] = post_likes_counts
-        print(post_likes_counts)
+
+        context['friends'] = Friends_user.objects.filter(user_fou=self.request.user)
+
         return context
     
     def post(self, request):
@@ -60,7 +76,6 @@ class HomeView(TemplateView):
             return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
         
         elif 'id_o_post_i_d' in data.keys():
-            print('234')
             post = PostM.objects.get(id=data['id_o_post_i_d'])
             comments = CommentM.objects.filter(post=post)
             response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
@@ -75,10 +90,14 @@ class HomeView(TemplateView):
             return JsonResponse(response, safe=False)
         
         if 'delete_data_id' in data.keys():
-            like = LikeM.objects.get(id=data['delete_data_id'])
+            post= PostM.objects.get(id=data['delete_data_id'])
+
+            like = LikeM.objects.get(post=post, user=self.request.user)
             like.delete()
             like.save()
-
+            
+            response = {'id_o_ppost': post.id}
+            return JsonResponse(response, safe=False)
         return JsonResponse('ok', safe=False)
 
     
@@ -130,12 +149,10 @@ class ProfileView(TemplateView):
         data = request.POST
         print(data.keys())
         if 'delete_post' in data.keys():
-            print('asd1')
             post = PostM.objects.get(id=data['delete_post'])
             post.delete()
 
         elif 'form_dataa' in data.keys():
-            print('asd')
             post = PostM.objects.get(id=data['data_forma_id'])
             user = request.user
             comment = CommentM(text=data['form_dataa'], post=post, user=user)
@@ -144,7 +161,6 @@ class ProfileView(TemplateView):
             return JsonResponse(response, safe=False)
 
         elif 'id_o_post_i_d' in data.keys():
-            print('234')
             post = PostM.objects.get(id=data['id_o_post_i_d'])
             comments = CommentM.objects.filter(post=post)
             response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
@@ -170,13 +186,11 @@ class ProfileView(TemplateView):
             return JsonResponse({'new_username': str(user.username)}, safe=False)
         
         elif 'vw_post' in data.keys():
-            print('asd2')
             post = PostM.objects.get(id=data['vw_post'])
             comments = CommentM.objects.filter(post=post)
             return JsonResponse({'post_w_img':str(post.images),'post_text':post.text, 'user_username': request.user.username, 'user_id': request.user.id  }, safe=False)
         
         elif 'ava' in request.POST:
-            print('asd4')
             files = request.FILES['file']
             with open('facebook_app/static/media_photo/profile/avatar/upload.png', 'wb') as img:
                 img.write(files.read())
@@ -191,7 +205,6 @@ class ProfileView(TemplateView):
             return JsonResponse({'new_avatar': str(user.avatar.url)})
         
         elif 'cr_user' in data.keys():
-            print('asd3')
             curr_user = New_user.objects.get(username=data['cr_user'])
             return JsonResponse({'user_username': curr_user.username})
         return JsonResponse('ok', safe=False)
@@ -222,6 +235,22 @@ class VProfileView(TemplateView):
             context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends.all())
         except Friends_user.DoesNotExist:
             context['len_friends'] = 0
+
+
+        try:
+            for i in Friends_user.objects.get(user_fou=user).friends.all():
+                if i == self.request.user:
+                    print('work')
+                    context['is_subscribed'] = 1
+                else:
+                    context['is_subscribed'] = 0
+            else:
+                if len(Friends_user.objects.get(user_fou=user).friends.all()) == 0:
+                    context['is_subscribed'] = 0
+        except Friends_user.DoesNotExist:
+            print('doew not work')
+            context['is_subscribed'] = 0
+
         return context
     
     def post(self, request, **kwargs):
@@ -230,11 +259,26 @@ class VProfileView(TemplateView):
         if 'friend' in data.keys():
             user = request.user
             a = New_user.objects.get(id=kwargs['id'])
+            m = New_user.objects.get(id=user.id)
             b, t =Friends_user.objects.get_or_create(user_fou=a)
+
+            c, g = Friends_user.objects.get_or_create(user_fou=m)
+
+            c.following.add(a)
+            c.save()
+            
             
             b.friends.add(user)
             b.save()
             return JsonResponse('ok', safe=False)
+        
+        if 'ofriend' in data.keys():
+            user = request.user
+            a = New_user.objects.get(id=kwargs['id'])
+            b =Friends_user.objects.get(user_fou=a)
+            b.friends.remove(user)
+            b.save()
+    
             
         return JsonResponse('ok', safe=False)
 

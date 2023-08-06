@@ -86,7 +86,7 @@ $(function(){
     $(document).click(function(event){
         like = $(event.target);
 
-        if(like.attr('class') == 'likes_button'){
+        if(like.attr('class') == 'not_coment_on_post_btn'){
              
             $.ajax(like.data('url'), {
                 'type':'POST',
@@ -94,14 +94,14 @@ $(function(){
                 'dataType': 'json',
                 'data':{
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'data_id': like.data('id')
+                    'delete_data_id': like.data('id')
                 },
                 'success': function(data){
-                    let elements = document.getElementsByClassName('likes_button');
+                    let elements = document.getElementsByClassName('not_coment_on_post_btn');
                     for (let i=0; i < elements.length; i++) {
                         if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
-                            elements.item(i).getElementsByClassName("likes_button").item(0).outerHTML = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
-                            elements.item(i).getElementsByClassName("nomber_of_like").item(0).innerHTML -= Number(1) ;
+                            document.getElementById('like_') = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+                            document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) - 1;
                         }
                     }
                 }
@@ -115,7 +115,7 @@ $(function(){
         like = $(event.target);
 
         if(like.attr('class') == 'likes_button'){
-             
+            console.log('likeeee')
             $.ajax(like.data('url'), {
                 'type':'POST',
                 'async': true, 
@@ -128,8 +128,8 @@ $(function(){
                     let elements = document.getElementsByClassName('likes_button');
                     for (let i=0; i < elements.length; i++) {
                         if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
-                            elements.item(i).getElementsByClassName("likes_button").item(0).outerHTML = '<button data-url="/" class="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
-                            elements.item(i).getElementsByClassName("nomber_of_like").item(0).innerHTML += Number(1) ;
+                            document.getElementById('like__').innerHTML = '<button data-url="/" class="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
+                            document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) + 1;
                         }
                     }
                 }
@@ -169,9 +169,25 @@ $(function(){
                 'friend':true
             },
             'success':function(data){
-                console.log('asdasd')
-                document.getElementById('follower_btn').style.backgroundColor = '#eef';
-                document.getElementById('follower_btn').style.color = 'black';
+                document.getElementById('follower_btn').outerHTML = '<button data-url="/view_profile/{{user_data.id}}/" id="unfollower_btn">Перестати дружити</button>';
+            }
+        })
+    })
+})
+
+$(function(){
+    $('#unfollower_btn').click(function(){
+        let btn = $(this);
+        $.ajax(btn.data('url'), {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'ofriend':true
+            },
+            'success':function(data){
+                document.getElementById('unfollower_btn').outerHTML = '<button data-url="/view_profile/{{user_data.id}}/" id="follower_btn">Дружити</button>';
             }
         })
     })

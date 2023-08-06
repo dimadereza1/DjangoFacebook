@@ -198,6 +198,19 @@ body {
     background-color: rgb(19, 198, 19);
 } 
 
+#unfollower_btn {
+    width: 232px; 
+    height: 36px; 
+    border: none; 
+    background-color: #eef; 
+    color: black; 
+    border-radius: 5px; 
+    font-weight: bold;
+    position: relative;
+    left: 80%;
+    top: -80px;
+}
+
 #avatar_btn {
     border: none;
     background-color: white;

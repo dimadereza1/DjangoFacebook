@@ -1,7 +1,7 @@
 {% for c in users %}
     <div>
         <button type="button" id="searched_person">
-            <img src="{{c.avatar}}">
+            <img width="32px" height="32px" style="border-radius: 100%;" src="{{c.avatar.url}}">
             <a>{{c.username}}</a>
         </button>
     </div>
