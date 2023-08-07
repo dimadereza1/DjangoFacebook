@@ -34,15 +34,13 @@ class HomeView(TemplateView):
 
         friends = []
 
-        try:
-            for f in Friends_user.objects.filter(user_fou=self.request.user).following.all():
-                for foll in Friends_user.objects.filter(user_fou=f).following.all():
-                    if foll == self.request.user:
-                        friends.append(f)
-            print(friends)
 
-        except AttributeError:
-            print('test1')
+        for f in Friends_user.objects.get(user_fou=self.request.user).following.all():
+            for foll in Friends_user.objects.get(user_fou=f).following.all():
+                if foll == self.request.user:
+                    friends.append(f)
+        print(friends)
+
 
         post_likes_counts = []
         for post in posts:
