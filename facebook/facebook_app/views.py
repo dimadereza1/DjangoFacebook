@@ -67,13 +67,36 @@ class HomeView(TemplateView):
     
     def post(self, request):
         data = request.POST
+        us = request.user
         if 'vw_post' in data.keys():
             post = PostM.objects.get(id=data['vw_post'])
             comments = CommentM.objects.filter(post=post)
             return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
         
         elif 'id_open_chat' in data.keys():
-            pass
+            user_two = New_user.objects.get(id=data['user_two'])
+            for i in Chats.objects.all():
+                if us in i.members.all() and user_two in i.members.all():
+                    chat = Chats.objects.get(id=i.id)
+                    a = Messages.objects.filter(chat=chat).all().order_by('-created_At')
+                    response = render_to_string('chat.html', {'chat': chat.id, 'messages': a, 'user': us, 'us_two': user_two})
+                    return JsonResponse(response, safe=False)
+            else:
+                chat = Chats()
+                chat.save()
+                chat.members.add(us, data['user_two'])
+                response = render_to_string('chat.html', {'chat': chat.id, 'user': us, 'messages': 0, 'us_two': user_two})
+                return JsonResponse(response, safe=False)
+            
+        elif 'id_chat_data' in data.keys():
+            print('chat')
+            chat = Chats.objects.get(id=data['id_chat_data'])
+            a = Messages(chat=chat, user=us, text=data['text_chat_f'])
+            a.save()
+
+            response = render_to_string('chat_mess.html', {'text_mess': data['text_chat_f'], 'user': us})
+            return JsonResponse(response, safe=False)
+
             
         elif 'id_o_post_i_d' in data.keys():
             post = PostM.objects.get(id=data['id_o_post_i_d'])

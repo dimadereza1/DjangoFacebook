@@ -30,21 +30,21 @@
         </div>
     {% endfor %}
 
-    <div id="friend-block" style="position: absolute; left: 85%; top: 100px; overflow-y: scroll; height: 100vh;">
+    <div id="friend-block" style="position: fixed; left: 85%; top: 100px; overflow-y: scroll; height: 100vh;">
         <h3>Ваші друзі</h3>
         <hr style="margin: 10px auto; width: 100%;">
         {% for ff in friends %}
             <div>
-                <button data-url="/" data-id="{{ff.id}}" class="open_chat" style="background-color: white; border: none;">
-                    <img style="border-radius: 100%;" src="{{ff.avatar.url}}" width="42px" height="42px">
-                    <a>{{ff.username}}</a>
+                <button style="background-color: rgb(240,242,245); border: none;">
+                    <img data-us="{{ff.id}}" data-url="/" data-id="{{ff.id}}" class="open_chat" style="border-radius: 100%;" src="{{ff.avatar.url}}" width="42px" height="42px">
+                    <a data-us="{{ff.id}}" data-url="/" data-id="{{ff.id}}" class="open_chat" style="text-decoration: none; color: black;">{{ff.username}}</a>
                 </button>
 
             </div>
         {% endfor %}
     </div>
 
-    <dialog id="chat_dialog">
+    <dialog id="chat_dialogg" style="width: 338px; height: 455px; position: fixed; top: -27%; left: 70%;transform: translateY(100%); background-color: white; border: white; border-radius: 5px;">
 
     </dialog>
 

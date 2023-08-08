@@ -33,34 +33,30 @@ function closeRegister() {
     })
 }
 
-// $(function(){
-//     document.getElementById('cl_bt').addEventListener('click', function() {
-//         document.getElementById('post_dialoggg').close();
-//     })
-// }
-// )
+function closeChatV(){
+    document.getElementById('chat_dialogg').close();
+}
 
-// $(function(){
-//     $('#like_btn').click(function(){
-//         let btn = $(this);
-//         console.log(btn.data('id'))
-//         $.ajax(btn.data('url'), {
-//             'type':'POST',
-//             'async': true, 
-//             'dataType': 'json',
-//             'data': {
-//                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-//                 'data_id': btn.data('id')
-//             },
-//            'success':function(data){
+$(function(){
+    $('#sent_mess_btn').click(function(){
+        let btn = $(this);
+        console.log(btn.data('id'))
+        $.ajax(btn.data('url'), {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'id_chat_data': btn.data('id'),
+                'text_chat_f': document.getElementById('input_mess').value
+            },
+           'success':function(data){
+                document.getElementById('chat_block').innerHTML += data;
+            }
+        })
+    })
+})
 
-//                 document.getElementById('like_btn').outerHTML = '<button data-url="/" id="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
-//                 document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) + 1;
-
-//             }
-//         })
-//     })
-// })
 
 $(function(){
     $('#not_coment_on_post_btn').click(function(){
@@ -181,8 +177,10 @@ $(function(){
     $(document).click(function(event){
         open_chat_btn = $(event.target);
 
-        if(open_post_btn.attr('class') == 'open_chat'){
-            document.getElementById('chat_dialog').show();
+        if(open_chat_btn.attr('class') == 'open_chat'){
+            console.log('topq');
+            document.getElementById('chat_dialogg').show();
+            console.log('topw');
 
              
             $.ajax(open_chat_btn.data('url'), {
@@ -191,15 +189,17 @@ $(function(){
                 'dataType': 'json',
                 'data':{
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'id_open_chat': open_chat_btn.data('id')
+                    'id_open_chat': open_chat_btn.data('id'),
+                    'user_two': open_chat_btn.data('us')
                 },
                 'success':function(data){
-                    // document.getElementById('post_dialoggg').innerHTML = data
+                    document.getElementById('chat_dialogg').innerHTML = data;
                 }
             })
         }
     })
 })
+
 
 
 

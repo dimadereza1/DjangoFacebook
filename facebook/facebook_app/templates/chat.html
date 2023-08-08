@@ -1,0 +1,27 @@
+<div id="b_ds">
+    <div>
+        <button onclick="closeChatV();" style="background-color: white; border: none; color: black; position: relative; left: 85%;"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+        <img src="{{us_two.avatar.url}}" style="border-radius: 100%;" width="32px" height="32px">
+        <a>{{us_two.username}}</a>
+    </div>
+    <hr style="margin: 10px auto; width: 100%;">
+    <div id="chat_block">
+        {% if messages %}
+            {% for m in message %}
+            <div>
+                <img src="{{m.user.avatar.url}}" style="border-radius: 100%;" width="28px" height="28px">
+                <a>m.text</a>
+            </div>
+            {% endfor %}
+            
+        {% else %}
+            <a style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #000;">Немає повідомлень</a>
+        {% endif %}
+    </div>
+    <div id="down_d" style="margin-top: 112%; ">
+        <img style="border-radius: 100%;" src="{{user.avatar.url}}" width="28px" height="28px">
+        <input id="input_mess" style="border-radius: 30px; border: none; background-color: whitesmoke; height: 30px;" placeholder="Напишіть щось">
+        <button data-url="/" data-id="{{chat}}" id="sent_mess_btn" style="border: none; background-color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></button>
+    </div>
+
+</div>
