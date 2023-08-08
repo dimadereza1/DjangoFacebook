@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django import http
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from .models import PostM, LikeM, CommentM,  New_user, Friends_user
+from .models import PostM, LikeM, CommentM,  New_user, Friends_user, Messages, Chats
 from .forms import LoginForm, RegisterForm
 from django.core.files import File
 from pathlib import Path
@@ -29,25 +29,25 @@ class HomeView(TemplateView):
         posts = PostM.objects.all().order_by('-created_at')
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
 
-
         context['following'] = Friends_user.objects.get(user_fou=self.request.user).following.all()
 
         friends = []
 
+        try:
+            for f in Friends_user.objects.get(user_fou=self.request.user).following.all():
+                for foll in Friends_user.objects.get(user_fou=f).following.all():
+                    if foll == self.request.user:
+                        friends.append(f)
+            print(friends)
 
-        for f in Friends_user.objects.get(user_fou=self.request.user).following.all():
-            for foll in Friends_user.objects.get(user_fou=f).following.all():
-                if foll == self.request.user:
-                    friends.append(f)
-        print(friends)
-
+        except AttributeError:
+            print('test1')
 
         post_likes_counts = []
         for post in posts:
             likes_count = LikeM.objects.filter(post=post).count()
             likes_count1 = LikeM.objects.filter(post=post)
             user = post.user
-
 
             for l in likes_count1:
 
@@ -58,11 +58,10 @@ class HomeView(TemplateView):
                     break
             else:
                 post_likes_counts.append([post, likes_count, 0, user])
-            
 
         context['post_likes_counts'] = post_likes_counts
 
-        context['friends'] = Friends_user.objects.filter(user_fou=self.request.user)
+        context['friends'] = friends
 
         return context
     
@@ -73,32 +72,31 @@ class HomeView(TemplateView):
             comments = CommentM.objects.filter(post=post)
             return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
         
+        elif 'id_open_chat' in data.keys():
+            pass
+            
         elif 'id_o_post_i_d' in data.keys():
             post = PostM.objects.get(id=data['id_o_post_i_d'])
             comments = CommentM.objects.filter(post=post)
             response = render_to_string('post_for_dia.html', {'postt': post ,'img_post': post.images, 'text_post': post.text, 'post_user':post.user, 'img_user':post.user.avatar.url, 'user':self.request.user, 'comments': comments})
             return JsonResponse(response, safe=False)
-        elif 'data_id' in data.keys():
-            post = PostM.objects.get(id=data['data_id'])
+        elif 'like' in data.keys():
+            if int(data['is_liked']) == 1:
+                post = PostM.objects.get(id=data['like'])
 
-            like = LikeM(post=post, user=self.request.user)
-            like.save()
+                like = LikeM.objects.get(post=post, user=self.request.user)
+                like.delete()
 
-            response = {'id_o_ppost': post.id}
-            return JsonResponse(response, safe=False)
-        
-        if 'delete_data_id' in data.keys():
-            post= PostM.objects.get(id=data['delete_data_id'])
+                response = {'id_o_ppost': post.id, 'is_liked': 0, 'amount': len(LikeM.objects.filter(post=post))}
+                return JsonResponse(response, safe=False)
+            else:
+                post = PostM.objects.get(id=data['like'])
 
-            like = LikeM.objects.get(post=post, user=self.request.user)
-            like.delete()
-            like.save()
-            
-            response = {'id_o_ppost': post.id}
-            return JsonResponse(response, safe=False)
-        return JsonResponse('ok', safe=False)
+                like = LikeM(post=post, user=self.request.user)
+                like.save()
 
-    
+                response = {'id_o_ppost': post.id, 'is_liked': 1, 'amount': len(LikeM.objects.filter(post=post))}
+                return JsonResponse(response, safe=False)
 
 class CreatePostView(TemplateView):
     template_name = 'create_post.html'
@@ -295,4 +293,6 @@ class RegisterView(CreateView):
             else:
                 new_user = New_user.objects.create_user(username=data['data_username'], email=data['data_email'], password=data['data_password'])
                 new_user.save()
+                fu = Friends_user(user_fou=new_user)
+                fu.save()
         return JsonResponse('', safe=False)

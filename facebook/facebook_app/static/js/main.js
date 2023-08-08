@@ -84,7 +84,7 @@ $(function(){
 
 $(function(){
     $(document).click(function(event){
-        like = $(event.target);
+        var like = $(event.target);
 
         if(like.attr('class') == 'not_coment_on_post_btn'){
              
@@ -94,14 +94,24 @@ $(function(){
                 'dataType': 'json',
                 'data':{
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'delete_data_id': like.data('id')
+                    'like': like.data('id'),
+                    'is_liked': like.data('liked')
                 },
                 'success': function(data){
-                    let elements = document.getElementsByClassName('not_coment_on_post_btn');
+                    let elements = document.getElementsByClassName('like_btn');
                     for (let i=0; i < elements.length; i++) {
                         if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
-                            document.getElementById('like_') = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
-                            document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) - 1;
+                            if (data['is_liked'] == 1){
+                                elements.item(i).innerHTML = `<button data-id="${data['id_o_ppost']}" data-liked="1" data-url="/" class="not_coment_on_post_btn" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/YfS72vr1mwv.png&quot;); background-position: 0px -160px; background-size: 26px 502px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>`;
+                            } else {
+                                elements.item(i).innerHTML = `<button data-id="${data['id_o_ppost']}" data-liked="0" data-url="/" class="not_coment_on_post_btn" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/YfS72vr1mwv.png);background-position:0 -180px;background-size:26px 502px;width:18px;height:18px;background-repeat:no-repeat;display:inline-block"></i> Подобається</button>`;
+                            }
+                        }
+                    }
+                    elements = document.getElementsByClassName('number_of_like');
+                    for (let i=0; i < elements.length; i++) {
+                        if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
+                            elements.item(i).innerHTML = data['amount'];
                         }
                     }
                 }
@@ -110,33 +120,7 @@ $(function(){
     })
 })
 
-$(function(){
-    $(document).click(function(event){
-        like = $(event.target);
 
-        if(like.attr('class') == 'likes_button'){
-            console.log('likeeee')
-            $.ajax(like.data('url'), {
-                'type':'POST',
-                'async': true, 
-                'dataType': 'json',
-                'data':{
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'data_id': like.data('id')
-                },
-                'success': function(data){
-                    let elements = document.getElementsByClassName('likes_button');
-                    for (let i=0; i < elements.length; i++) {
-                        if (elements.item(i).getAttribute('data-id') == data['id_o_ppost']) {
-                            document.getElementById('like__').innerHTML = '<button data-url="/" class="not_coment_on_post_btn" data-id="{{a_p.0.id}}" style="background-color: white; border: none; margin-left: 80px;"><i data-visualcompletion="css-img" class="x1b0d499 xi3auck" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -160px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
-                            document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) + 1;
-                        }
-                    }
-                }
-            })
-        }
-    })
-})
 
 function addComment(id){
         console.log('asdasd')
@@ -192,6 +176,32 @@ $(function(){
         })
     })
 })
+
+$(function(){
+    $(document).click(function(event){
+        open_chat_btn = $(event.target);
+
+        if(open_post_btn.attr('class') == 'open_chat'){
+            document.getElementById('chat_dialog').show();
+
+             
+            $.ajax(open_chat_btn.data('url'), {
+                'type':'POST',
+                'async': true, 
+                'dataType': 'json',
+                'data':{
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'id_open_chat': open_chat_btn.data('id')
+                },
+                'success':function(data){
+                    // document.getElementById('post_dialoggg').innerHTML = data
+                }
+            })
+        }
+    })
+})
+
+
 
 $(function(){
     $(document).click(function(event){
