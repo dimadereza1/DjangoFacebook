@@ -73,12 +73,17 @@ class HomeView(TemplateView):
             comments = CommentM.objects.filter(post=post)
             return JsonResponse({'post_img':post.images,'post_text':post.text, 'user': request.user,  }, safe=False)
         
+        if 'data_search' in data.keys():
+            users = New_user.objects.filter(username__contains=data['data_search'])
+            response = render_to_string('search.html', {'users':users})
+            return JsonResponse(response, safe=False)
+        
         elif 'id_open_chat' in data.keys():
             user_two = New_user.objects.get(id=data['user_two'])
             for i in Chats.objects.all():
                 if us in i.members.all() and user_two in i.members.all():
                     chat = Chats.objects.get(id=i.id)
-                    a = Messages.objects.filter(chat=chat).all().order_by('-created_At')
+                    a = Messages.objects.filter(chat=chat).all()
                     response = render_to_string('chat.html', {'chat': chat.id, 'messages': a, 'user': us, 'us_two': user_two})
                     return JsonResponse(response, safe=False)
             else:

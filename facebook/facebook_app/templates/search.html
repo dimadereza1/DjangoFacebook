@@ -1,0 +1,9 @@
+{% for us in users %}
+    <div style="margin: 10px;">
+        <button style="background-color: white; border: none;" onclick='location.href="http://127.0.0.1:8000/view_profile/{{us.id}}"'>
+            <img style="border-radius: 100%;" src="{{us.avatar.url}}" width="36px" height="36px">
+            <a>{{us.username}}</a>
+        </button>
+
+    </div>
+{% endfor %}

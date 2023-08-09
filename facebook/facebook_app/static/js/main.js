@@ -36,10 +36,9 @@ function closeRegister() {
 function closeChatV(){
     document.getElementById('chat_dialogg').close();
 }
+function sentMess(){
 
-$(function(){
-    $('#sent_mess_btn').click(function(){
-        let btn = $(this);
+        let btn = $('#sent_mess_btn');
         console.log(btn.data('id'))
         $.ajax(btn.data('url'), {
             'type':'POST',
@@ -48,14 +47,15 @@ $(function(){
             'data': {
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                 'id_chat_data': btn.data('id'),
-                'text_chat_f': document.getElementById('input_mess').value
+                'text_chat_f': document.getElementById('input_emess').value
             },
            'success':function(data){
                 document.getElementById('chat_block').innerHTML += data;
+                document.getElementById('if_n').outerText = none;
             }
         })
-    })
-})
+    }
+
 
 
 $(function(){
@@ -73,6 +73,25 @@ $(function(){
            'success':function(data){
                 document.getElementById('not_coment_on_post_btn').outerHTML = '<button data-id="{{a_p.0.id}}" data-url="/" class="likes_button" id="like_btn" style="background-color: white; border: none; margin-left: 80px;"><i id="ico_loke" data-visualcompletion="css-img" class="x1b0d499 x1d69dk1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/fSIH5kPU1qz.png&quot;); background-position: 0px -180px; background-size: 26px 556px; width: 18px; height: 18px; background-repeat: no-repeat; display: inline-block;"></i> Подобається</button>';
                 document.getElementById('nomber_of_like').innerHTML = Number(document.getElementById('nomber_of_like').innerHTML) - 1;
+            }
+        })
+    })
+})
+
+$(function(){
+    $('#inp_txt').keyup(function(){
+        let btn = $(this);
+        document.getElementById('search_data').show();
+        $.ajax('/', {
+            'type':'POST',
+            'async': true, 
+            'dataType': 'json',
+            'data': {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'data_search': btn.val()
+            },
+           'success':function(data){
+                document.getElementById('search_data').innerHTML = data;
             }
         })
     })
