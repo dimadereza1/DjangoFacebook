@@ -2,6 +2,10 @@ $.ajaxSetup({
     headers: { "X-CSRFToken": "{{ csrf_token }}" }
 });
 
+function closeSearchData() {
+    document.getElementById('search_data').close();
+}
+
 function openEdits() {
     $('#edit_profilee').click(function(){
         document.getElementById('edit_profile_data').show();

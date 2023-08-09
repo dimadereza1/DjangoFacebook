@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'chat.apps.ChatConfig',
     'facebook_app.apps.FacebookAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
