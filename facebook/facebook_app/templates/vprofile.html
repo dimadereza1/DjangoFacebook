@@ -20,7 +20,7 @@
                     <div class="col-12"><button data-url="/view_profile/{{user_data.id}}/" id="unfollower_btn">Перестати дружити</button></div>
                 {% endif %}
             </div>
-            <button style="position: relative; left: 200px; top: -87px; border: none; background-color: white;" type="button"><a style="font-weight: bold; color: gray;">друзі: {{len_friends}}</a></button>
+            <button style="position: relative; left: 200px; top: -87px; border: none; background-color: white;" type="button"><a style="font-weight: bold; color: gray;">Підписники: {{len_friends}}</a></button>
         </div>
         <h3 style="position: relative; left: 80px;">Дописи</h3>
         <hr style="width: 90%; margin: 10px auto;">
@@ -42,4 +42,18 @@
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block bodybb %}
+    <dialog id="vuser_followers" style="border: white; border-radius: 5px;    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); width: 400px; height: 500px;  position: absolute; top: 50%; left: 50%; right: 50%; transform: translate(-50%, -50%);">
+        <button onclick="closeFollowers();" style="border: none; background-color: white;" type="button"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/zgulV2zGm8t.png" alt="" width="28" height="28" id="u_f_9_d0"></button>
+        {% for f in user_f %}
+        <div style="margin: 10px 10px;">
+            <button onclick="location.href='http://127.0.0.1:8000/view_profile/{{f.id}}/'" style="background-color: white; border: none;">
+                <img src="{{f.avatar.url}}" width="40px" height="40px" style="border-radius: 100%;">
+                <a>{{f.username}}</a>
+            </button>
+        </div>
+        {% endfor %}
+    </dialog>
 {% endblock %}

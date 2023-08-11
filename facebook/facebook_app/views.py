@@ -162,6 +162,7 @@ class ProfileView(TemplateView):
         context['user_img'] = user.avatar.url
         context['user_bg'] = user.background.url
         context['p_o_u'] = PostM.objects.filter(user=user)
+        context['user_f'] = Friends_user.objects.get(user_fou=user).friends.all()
         context['user'] = self.request.user
         try:
             context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends.all())
@@ -255,6 +256,7 @@ class VProfileView(TemplateView):
         context['user_data'] = user
         context['user_img'] = New_user.objects.get(id=self.request.user.id).avatar.url
         context['p_o_u'] = PostM.objects.filter(user=user)
+        context['user_f'] = Friends_user.objects.get(user_fou=user).friends.all()
         try:
             context['len_friends'] = len(Friends_user.objects.get(user_fou=user).friends.all())
         except Friends_user.DoesNotExist:

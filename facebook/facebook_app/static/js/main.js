@@ -417,6 +417,16 @@ function closeSearchData() {
     document.getElementById('search_data').close();
 }
 
+function openFollowers() {
+    document.getElementById('user_followers').show();
+    document.getElementById('bodyb').inert = true;
+}
+
+function closeFollowers() {
+    document.getElementById('user_followers').close();
+    document.getElementById('bodyb').inert = false;
+}
+
 
 $(document).ready(function() {
     closeEdits();
