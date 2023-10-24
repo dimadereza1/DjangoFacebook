@@ -292,6 +292,11 @@ body {
     background-color: white;
 }
 
+
+
+#friend-block::-webkit-scrollbar {
+    width: 0;
+  }
 * {
     margin: 0px;
     padding: 0px;
